@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Avatar from 'react-avatar';
 import DotIcon from '../DotIcon';
 import Dropdown from '../Dropdown';
@@ -14,13 +20,39 @@ import {
 } from './style';
 
 interface CardListProps {
+  id: number;
   first_name: string;
   last_name: string;
   phone: string;
 }
 
-const CardList = ({ first_name, last_name, phone }: CardListProps) => {
+const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleDropdown = (e: React.MouseEvent) => {
+    setIsOpen(!isOpen);
+  };
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler: EventListener = (event: Event) => {
+      const target = event.target as Node;
+      if (!mobileMenuRef.current) {
+        return;
+      }
+
+      if (!mobileMenuRef.current.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handler, true);
+
+    return () => {
+      document.removeEventListener('click', handler, true);
+    };
+  }, []);
+
   return (
     <CardlistContainer>
       <ListContainer>
@@ -38,9 +70,13 @@ const CardList = ({ first_name, last_name, phone }: CardListProps) => {
           </TextName>
           <TextPhone>{phone}</TextPhone>
         </CardDescription>
-        <DropdownContainer>
-          <DotIcon onClick={() => setIsOpen(!isOpen)} />
-          <Dropdown isOpen={isOpen} />
+        <DropdownContainer ref={mobileMenuRef}>
+          <DotIcon onClick={handleDropdown} id={id} />
+          <Dropdown
+            isOpen={isOpen}
+            id={id.toString()}
+            onDelete={() => console.log('wow')}
+          />
         </DropdownContainer>
       </ListContainer>
     </CardlistContainer>

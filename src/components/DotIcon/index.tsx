@@ -1,14 +1,15 @@
 import React from 'react';
 
 interface DotIconProps {
-  onClick: () => void;
+  id: number;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const DotIcon = ({ onClick }: DotIconProps) => {
+const DotIcon = ({ onClick, id }: DotIconProps) => {
   return (
     <button
       onClick={onClick}
-      id="dropdownButton"
+      id={id.toString()}
       data-dropdown-toggle="dropdown"
       className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
       type="button"

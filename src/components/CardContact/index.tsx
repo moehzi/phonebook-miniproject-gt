@@ -16,6 +16,7 @@ const CardContact = ({ datas }: CardContactProps) => {
           datas.map((data) => {
             return (
               <CardList
+                id={data.id}
                 first_name={data.first_name}
                 last_name={data.last_name}
                 phone={data.phones[0].number}

@@ -3,14 +3,18 @@ import { DropdownMenu, ListItem } from './style';
 
 interface DropdownProps {
   isOpen: boolean;
+  id: string;
+  onDelete: (e: React.SyntheticEvent) => void;
 }
 
-const Dropdown = ({ isOpen }: DropdownProps) => {
+const Dropdown = ({ id, isOpen, onDelete }: DropdownProps) => {
   return (
-    <DropdownMenu id="dropdownId" className={` ${isOpen ? 'block' : 'hidden'}`}>
+    <DropdownMenu id={id} className={` ${isOpen ? 'block' : 'hidden'}`}>
       <ul className="py-2" aria-labelledby="dropdownButton">
         <ListItem className="text-gray-600">Add to favorite</ListItem>
-        <ListItem className={`text-red-600`}>Delete</ListItem>
+        <ListItem id={id} className={`text-red-600`} onClick={onDelete}>
+          Delete
+        </ListItem>
       </ul>
     </DropdownMenu>
   );
