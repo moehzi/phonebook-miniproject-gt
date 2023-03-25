@@ -1,35 +1,30 @@
 import { useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import tw from 'twin.macro';
 import Loader from './components/Loader';
 import Header from './containers/Header';
 import { GET_CONTACT_LIST } from './queries/GetContactList';
+import ListContact from './containers/ListContact';
 
-const Container = tw.div`mx-auto px-4 py-8 max-w-[640px]`;
-
-interface ContactHooks {
-  contact: ContactList[];
-}
-
-interface ContactList {
-  created_at: string;
-  first_name: string;
-  id: number;
-  last_name: string;
-  phones: {
-    number: string;
-  };
-}
+const Container = tw.div`mx-auto px-4 py-8 max-w-[500px] flex flex-col gap-4`;
 
 const App = () => {
-  //   console.log(data.contact, 'awas ada sule');
-  const { data, loading } = useQuery(GET_CONTACT_LIST);
+  const { data, loading } = useQuery(GET_CONTACT_LIST, {
+    variables: { order_by: { first_name: 'asc' } },
+  });
+
+  useEffect(() => {
+    if (!loading) {
+      console.log(data);
+    }
+  }, [data, loading]);
 
   if (loading) return <Loader />;
 
   return (
     <Container>
       <Header datas={data.contact} />
+      <ListContact datas={data.contact} />
     </Container>
   );
 };
