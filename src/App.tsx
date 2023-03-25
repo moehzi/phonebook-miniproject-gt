@@ -1,33 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { useQuery } from '@apollo/client';
+import React from 'react';
+import tw from 'twin.macro';
+import Loader from './components/Loader';
+import Header from './containers/Header';
 import { GET_CONTACT_LIST } from './queries/GetContactList';
 
-function App() {
-  const { loading, error, data } = useQuery(GET_CONTACT_LIST);
+const Container = tw.div`mx-auto px-4 py-8 max-w-[640px]`;
 
-  if (loading) <p>Loading....</p>;
-  console.log(data, 'aww');
+interface ContactHooks {
+  contact: ContactList[];
+}
+
+interface ContactList {
+  created_at: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  phones: {
+    number: string;
+  };
+}
+
+const App = () => {
+  //   console.log(data.contact, 'awas ada sule');
+  const { data, loading } = useQuery(GET_CONTACT_LIST);
+
+  if (loading) return <Loader />;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Header datas={data.contact} />
+    </Container>
   );
-}
+};
 
 export default App;
