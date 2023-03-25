@@ -34,7 +34,7 @@ const CardList = ({ first_name, last_name, phone }: CardListProps) => {
         </Image>
         <CardDescription>
           <TextName>
-            {first_name} {last_name}
+            {first_name} <span className="font-light">{last_name}</span>
           </TextName>
           <TextPhone>{phone}</TextPhone>
         </CardDescription>

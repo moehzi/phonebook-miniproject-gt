@@ -12,15 +12,19 @@ const CardContact = ({ datas }: CardContactProps) => {
   return (
     <CardContainer>
       <ul className="divide-y divide-gray-200">
-        {datas.map((data) => {
-          return (
-            <CardList
-              first_name={data.first_name}
-              last_name={data.last_name}
-              phone={data.phones[0].number}
-            />
-          );
-        })}
+        {datas.length > 0 ? (
+          datas.map((data) => {
+            return (
+              <CardList
+                first_name={data.first_name}
+                last_name={data.last_name}
+                phone={data.phones[0].number}
+              />
+            );
+          })
+        ) : (
+          <p className="font-semibold text-center">No result found</p>
+        )}
       </ul>
     </CardContainer>
   );
