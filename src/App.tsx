@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import tw from 'twin.macro';
 import Loader from './components/Loader';
 import Header from './containers/Header';
@@ -17,6 +17,8 @@ const App = () => {
       where: { first_name: { _like: `%${searchRes}%` } },
     },
   });
+
+  const [favorites, dispatch] = useReducer(favoriteReducer, intialTask);
 
   //   useEffect(() => {
   //     if (!loading) {

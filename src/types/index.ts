@@ -6,6 +6,6 @@ export default interface ContactList {
   phones: Phones[];
 }
 
-interface Phones {
+export interface Phones {
   number: string;
 }
