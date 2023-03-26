@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { ContactList, FavoriteContact } from '../../types';
 import Avatar from 'react-avatar';
 import { CardContainer } from './style';
@@ -6,21 +6,39 @@ import CardList from '../CardList';
 import { ContactContext } from '../../contexts/ContactContext';
 import FavoriteList from '../CardList/FavoriteList';
 import tw from 'twin.macro';
+import Pagination from '../Pagination';
 
 interface CardContactProps {
   datas: ContactList[];
+  state: number;
+  totalPages: number;
+  setState: (pageNum: number) => void;
 }
 
 const TitleCard = tw.h5`font-semibold text-lg text-gray-700`;
 
-const CardContact = ({ datas }: CardContactProps) => {
+const CardContact = ({
+  datas,
+  state,
+  setState,
+  totalPages,
+}: CardContactProps) => {
   const { favorites } = useContext(ContactContext);
+
   const filteredFavorites = useMemo(() => {
     const filteredArr = datas.filter(
       (data) => !favorites.some((favorite) => data.id === favorite.id)
     );
     return filteredArr;
   }, [datas, favorites]);
+
+  const handleNext = () => {
+    setState(state + 1);
+  };
+
+  const handlePrevious = () => {
+    setState(state - 1);
+  };
 
   return (
     <CardContainer>
@@ -57,6 +75,13 @@ const CardContact = ({ datas }: CardContactProps) => {
           <p className="font-semibold text-center">No result found</p>
         )}
       </ul>
+      <Pagination
+        totalPages={totalPages}
+        datas={filteredFavorites}
+        currentPage={state}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
+      />
     </CardContainer>
   );
 };

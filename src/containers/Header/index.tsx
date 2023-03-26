@@ -5,14 +5,14 @@ import { Heading } from './style';
 import tw from 'twin.macro';
 import { ContactList } from '../../types/index';
 interface HeaderProps {
-  datas: ContactList[];
   state: string;
+  length: number;
   setState: (text: string) => void;
 }
 
 const HeaderContainer = tw.div`flex flex-col gap-2`;
 
-const Header = ({ datas, setState, state }: HeaderProps) => {
+const Header = ({ length, setState, state }: HeaderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setState(e.currentTarget.value);
@@ -21,7 +21,7 @@ const Header = ({ datas, setState, state }: HeaderProps) => {
   return (
     <HeaderContainer>
       <Heading>My Contacts</Heading>
-      <Text>Friends ({datas?.length})</Text>
+      <Text>Friends ({length})</Text>
       <Searchbox onChange={handleChange} value={state} />
     </HeaderContainer>
   );

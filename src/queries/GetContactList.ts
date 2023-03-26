@@ -23,5 +23,10 @@ export const GET_CONTACT_LIST = gql`
         number
       }
     }
+    totalCount: contact_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `;

@@ -1,7 +1,9 @@
-import React, { Children, createContext, Reducer, useReducer } from 'react';
+import React, { createContext, Reducer, useReducer } from 'react';
 import { FavoriteContact } from '../types';
 
-export const initialState: FavoriteContact[] = [];
+export const initialState: FavoriteContact[] = localStorage.getItem('favorites')
+  ? JSON.parse(localStorage.getItem('favorites') || '')
+  : [];
 
 export enum ActionType {
   AddFavorite,
@@ -47,12 +49,17 @@ export const favoriteReducer = (
 ) => {
   switch (action.type) {
     case ActionType.AddFavorite: {
+      localStorage.setItem(
+        'favorites',
+        JSON.stringify([...favorites, action.payload])
+      );
       return [...favorites, action.payload];
     }
     case ActionType.DeleteFavorite: {
       const filterRemoved = favorites.filter(
         (data) => data.id !== action.payload
       );
+      localStorage.setItem('favorites', JSON.stringify(filterRemoved));
       return filterRemoved;
     }
     default:

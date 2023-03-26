@@ -4,12 +4,25 @@ import { ContactList } from '../../types/index';
 
 interface ListContactProps {
   datas: ContactList[];
+  state: number;
+  totalPages: number;
+  setState: (pageNum: number) => void;
 }
 
-const ListContact = ({ datas }: ListContactProps) => {
+const ListContact = ({
+  datas,
+  setState,
+  state,
+  totalPages,
+}: ListContactProps) => {
   return (
     <>
-      <CardContact datas={datas} />
+      <CardContact
+        totalPages={totalPages}
+        datas={datas}
+        state={state}
+        setState={setState}
+      />
     </>
   );
 };
