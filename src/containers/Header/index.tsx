@@ -1,16 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Searchbox from '../../components/Searchbox';
 import { Text } from '../../styles/style';
-import { Heading } from './style';
-import tw from 'twin.macro';
-import { ContactList } from '../../types/index';
+import { HeaderContainer, Heading, IconContainer } from './style';
+import IconPlus from '../../components/IconPlus/IconPlus';
 interface HeaderProps {
   state: string;
   length: number;
   setState: (text: string) => void;
 }
-
-const HeaderContainer = tw.div`flex flex-col gap-2`;
 
 const Header = ({ length, setState, state }: HeaderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +17,10 @@ const Header = ({ length, setState, state }: HeaderProps) => {
 
   return (
     <HeaderContainer>
-      <Heading>My Contacts</Heading>
+      <IconContainer>
+        <Heading>My Contacts</Heading>
+        <IconPlus />
+      </IconContainer>
       <Text>Friends ({length})</Text>
       <Searchbox onChange={handleChange} value={state} />
     </HeaderContainer>

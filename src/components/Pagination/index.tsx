@@ -25,7 +25,7 @@ const Pagination = ({
   totalPages,
 }: PaginationPropsType) => {
   return (
-    <nav aria-label="Page navigation example" className="mt-4">
+    <nav aria-label="Page navigation example" className="mt-4 text-center">
       <PaginationContainer>
         <ButtonPrevious onClick={onPrevious} disabled={currentPage === 1}>
           <IconPrevious />
