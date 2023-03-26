@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Avatar from 'react-avatar';
-import tw from 'twin.macro';
 import {
   addFavorite,
   ContactDispatchContext,
