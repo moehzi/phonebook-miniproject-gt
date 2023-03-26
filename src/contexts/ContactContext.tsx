@@ -9,7 +9,7 @@ export enum ActionType {
 }
 
 export interface ContactContextType {
-  state: FavoriteContact[];
+  favorites: FavoriteContact[];
 }
 
 interface ContactDispatchContextType {
@@ -22,7 +22,7 @@ export const ContactDispatchContext =
   });
 
 export const ContactContext = createContext<ContactContextType>({
-  state: initialState,
+  favorites: initialState,
 });
 
 interface ContactsProviderProps {
@@ -42,19 +42,21 @@ interface DeleteFavorite {
 export type FavoriteAction = AddFavorite | DeleteFavorite;
 
 export const favoriteReducer = (
-  state: FavoriteContact[],
+  favorites: FavoriteContact[],
   action: FavoriteAction
 ) => {
   switch (action.type) {
     case ActionType.AddFavorite: {
-      return [...state, action.payload];
+      return [...favorites, action.payload];
     }
     case ActionType.DeleteFavorite: {
-      const filterRemoved = state.filter((data) => data.id !== action.payload);
+      const filterRemoved = favorites.filter(
+        (data) => data.id !== action.payload
+      );
       return filterRemoved;
     }
     default:
-      return state;
+      return favorites;
   }
 };
 
@@ -69,12 +71,12 @@ export const deleteFavorite = (id: number): DeleteFavorite => ({
 });
 
 export const ContactsProvider = ({ children }: ContactsProviderProps) => {
-  const [state, dispatch] = useReducer<
+  const [favorites, dispatch] = useReducer<
     Reducer<FavoriteContact[], FavoriteAction>
   >(favoriteReducer, initialState);
 
   return (
-    <ContactContext.Provider value={{ state }}>
+    <ContactContext.Provider value={{ favorites }}>
       <ContactDispatchContext.Provider value={{ dispatch }}>
         {children}
       </ContactDispatchContext.Provider>

@@ -5,7 +5,7 @@ interface DropdownProps {
   isOpen: boolean;
   id: string;
   onDelete: (e: React.SyntheticEvent) => void;
-  onAddFavorite: (e: React.SyntheticEvent) => void;
+  onAddFavorite?: (e: React.SyntheticEvent) => void;
   isFavorite: boolean;
 }
 

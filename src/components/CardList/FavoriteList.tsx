@@ -1,15 +1,6 @@
-import React, {
-  MouseEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Avatar from 'react-avatar';
-import tw from 'twin.macro';
 import {
-  addFavorite,
   ContactDispatchContext,
   deleteFavorite,
 } from '../../contexts/ContactContext';
@@ -33,7 +24,7 @@ interface CardListProps {
   phone: string;
 }
 
-const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
+const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { dispatch } = useContext(ContactDispatchContext);
 
@@ -42,15 +33,8 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
   };
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  const handleAddFavorite = (e: React.SyntheticEvent) => {
-    setIsOpen(false);
-    const datas = {
-      id,
-      first_name,
-      last_name,
-      phone,
-    };
-    dispatch(addFavorite(datas));
+  const handleRemoveFavorite = (e: React.SyntheticEvent) => {
+    dispatch(deleteFavorite(Number(e.currentTarget.id)));
   };
 
   useEffect(() => {
@@ -89,11 +73,11 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
           </TextName>
           <TextPhone>{phone}</TextPhone>
         </CardDescription>
+        <LoveHit onClick={handleRemoveFavorite} id={id} />
         <DropdownContainer ref={mobileMenuRef}>
           <DotIcon onClick={handleDropdown} id={id} />
           <Dropdown
-            isFavorite={false}
-            onAddFavorite={handleAddFavorite}
+            isFavorite={true}
             isOpen={isOpen}
             id={id.toString()}
             onDelete={() => console.log('wow')}
@@ -104,4 +88,4 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
   );
 };
 
-export default CardList;
+export default FavoriteList;

@@ -4,24 +4,47 @@ import Avatar from 'react-avatar';
 import { CardContainer } from './style';
 import CardList from '../CardList';
 import { ContactContext } from '../../contexts/ContactContext';
+import FavoriteList from '../CardList/FavoriteList';
+import tw from 'twin.macro';
 
 interface CardContactProps {
   datas: ContactList[];
 }
 
+const TitleCard = tw.h5`font-semibold text-lg text-gray-700`;
+
 const CardContact = ({ datas }: CardContactProps) => {
-  const { state } = useContext(ContactContext);
+  const { favorites } = useContext(ContactContext);
+  const filteredFavorites = useMemo(() => {
+    const filteredArr = datas.filter(
+      (data) => !favorites.some((favorite) => data.id === favorite.id)
+    );
+    return filteredArr;
+  }, [datas, favorites]);
 
   return (
     <CardContainer>
+      <TitleCard>Favorites ({favorites.length})</TitleCard>
       <ul className="divide-y divide-gray-200">
-        {datas.length > 0 ? (
-          datas.map((data) => {
+        {favorites.length > 0 &&
+          favorites.map((data) => {
+            return (
+              <FavoriteList
+                key={data.id}
+                id={data.id}
+                first_name={data.first_name}
+                last_name={data.last_name}
+                phone={data.phone}
+              />
+            );
+          })}
+      </ul>
+      <TitleCard className="mt-4">All Contacts</TitleCard>
+      <ul className="divide-y divide-gray-200">
+        {filteredFavorites.length > 0 ? (
+          filteredFavorites.map((data) => {
             return (
               <CardList
-                isFavorite={state.some((obj) =>
-                  Object.values(obj).includes(data.id)
-                )}
                 key={data.id}
                 id={data.id}
                 first_name={data.first_name}
