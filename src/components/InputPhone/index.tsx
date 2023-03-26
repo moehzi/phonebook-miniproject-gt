@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import tw from 'twin.macro';
 import { IconContainer, Input, Label } from '../InputBox/style';
 import IconDelete from './IconDelete';
@@ -14,13 +14,6 @@ interface InputPhoneProps {
   handleDeletePhone: (i: number) => void;
   state: Phones[];
 }
-
-// interface InputData {
-//   firstname: string;
-//   lastname: string;
-//   phones: [{ number: string }];
-// }
-
 interface Phones {
   number: string;
 }
@@ -31,32 +24,6 @@ const InputPhone = ({
   handleDeletePhone,
   state,
 }: InputPhoneProps) => {
-  //   const [inputBox, setInputBox] = useState([{ phone: '' }]);
-
-  //   const handleAdd = () => {
-  //     setInputBox([...inputBox, { phone: '' }]);
-  //   };
-
-  //   const handleChange = (e) => {};
-
-  //   const handleChange = (value, i) => {
-  //     const inputVal = [...inputBox];
-  //     inputVal[i] = value.currentTarget.value;
-  //   };
-
-  //   const handleChange = (e: React.ChangeEvent, i: number) => {
-  //     const onChangeVal = [...inputBox];
-  //     const target = e.target as HTMLInputElement;
-  //     onChangeVal[i].phone = target.value;
-  //     setInputBox(onChangeVal);
-  //   };
-
-  //   const handleDelete = (i: number) => {
-  //     const deleteVal = [...inputBox];
-  //     deleteVal.splice(i, 1);
-  //     setInputBox(deleteVal);
-  //   };
-
   return (
     <div>
       <Label>Phone Number</Label>
@@ -70,13 +37,9 @@ const InputPhone = ({
               type="text"
               placeholder="Input your phonenumber"
               value={data.number}
-              //   onChange={(e: React.ChangeEvent) => handleChange(e, i)}
               onChange={(e) => handleChangePhone(e, i)}
             />
-            <IconRightContainer
-              // onClick={() => handleDelete(i)}
-              onClick={() => handleDeletePhone(i)}
-            >
+            <IconRightContainer onClick={() => handleDeletePhone(i)}>
               <IconDelete />
             </IconRightContainer>
           </div>
@@ -90,7 +53,6 @@ const InputPhone = ({
           readOnly
           type="text"
           placeholder="Add phonenumber"
-          //   onClick={() => handleAdd()}
           onClick={() => handleAddPhone()}
         />
       </div>

@@ -36,7 +36,6 @@ const FormContact = () => {
 
   const handleChangePhone = (e: React.ChangeEvent, i: number) => {
     const onChangeVal = { ...inputData, phones: [...inputData.phones] };
-    // const onChangeVal = [...inputBox];
     const target = e.target as HTMLInputElement;
     onChangeVal.phones[i].number = target.value;
     setInputData(onChangeVal);
