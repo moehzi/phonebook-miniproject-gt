@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { ContactList } from '../../types';
+import React from 'react';
 import IconNext from './IconNext';
 import IconPrevious from './IconPrevious';
 import {

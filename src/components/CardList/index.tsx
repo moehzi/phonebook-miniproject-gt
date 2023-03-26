@@ -1,21 +1,12 @@
-import React, {
-  MouseEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Avatar from 'react-avatar';
 import tw from 'twin.macro';
 import {
   addFavorite,
   ContactDispatchContext,
-  deleteFavorite,
 } from '../../contexts/ContactContext';
 import DotIcon from '../DotIcon';
 import Dropdown from '../Dropdown';
-import LoveHit from '../LoveHit';
 import {
   CardDescription,
   CardlistContainer,

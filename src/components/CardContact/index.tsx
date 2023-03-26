@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { ContactList, FavoriteContact } from '../../types';
-import Avatar from 'react-avatar';
+import React, { useContext, useMemo } from 'react';
+import { ContactList } from '../../types';
 import { CardContainer } from './style';
 import CardList from '../CardList';
 import { ContactContext } from '../../contexts/ContactContext';

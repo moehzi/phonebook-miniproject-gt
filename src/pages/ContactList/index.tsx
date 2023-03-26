@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
-import tw from 'twin.macro';
 import Loader from '../../components/Loader';
 import Header from '../../containers/Header';
 import { GET_CONTACT_LIST } from '../../queries/GetContactList';
