@@ -1,11 +1,15 @@
+import { useMutation } from '@apollo/client';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Avatar from 'react-avatar';
 import {
   ContactDispatchContext,
   deleteFavorite,
 } from '../../contexts/ContactContext';
+import { DELETE_CONTACT_PHONE } from '../../queries/DeleteContactPhone';
+import { GET_CONTACT_LIST } from '../../queries/GetContactList';
 import DotIcon from '../DotIcon';
 import Dropdown from '../Dropdown';
+import Loader from '../Loader';
 import LoveHit from '../LoveHit';
 import {
   CardDescription,
@@ -37,6 +41,18 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
     dispatch(deleteFavorite(Number(e.currentTarget.id)));
   };
 
+  const [deleteContact, { loading }] = useMutation(DELETE_CONTACT_PHONE, {
+    onCompleted: (data) => {
+      console.log(data);
+    },
+    refetchQueries: [GET_CONTACT_LIST],
+  });
+
+  const handleDelete = (e: React.MouseEvent) => {
+    dispatch(deleteFavorite(Number(e.currentTarget.id)));
+    deleteContact({ variables: { id: Number(e.currentTarget.id) } });
+  };
+
   useEffect(() => {
     const handler: EventListener = (event: Event) => {
       const target = event.target as Node;
@@ -55,6 +71,8 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
       document.removeEventListener('click', handler, true);
     };
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <CardlistContainer>
@@ -80,7 +98,7 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
             isFavorite={true}
             isOpen={isOpen}
             id={id.toString()}
-            onDelete={() => console.log('wow')}
+            onDelete={handleDelete}
           />
         </DropdownContainer>
       </ListContainer>

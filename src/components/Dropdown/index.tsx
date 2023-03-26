@@ -4,7 +4,7 @@ import { DropdownMenu, ListItem } from './style';
 interface DropdownProps {
   isOpen: boolean;
   id: string;
-  onDelete: (e: React.SyntheticEvent) => void;
+  onDelete: (e: React.MouseEvent) => void;
   onAddFavorite?: (e: React.SyntheticEvent) => void;
   isFavorite: boolean;
 }
