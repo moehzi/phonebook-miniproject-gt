@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertError from '../../components/AlertError';
@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import { ADD_CONTACT_WITH_PHONES } from '../../queries/AddContactWithPhones';
 import { GET_CONTACT_LIST } from '../../queries/GetContactList';
 import { Container } from '../../styles/style';
+import { ContactList } from '../../types';
 import { ButtonCancel, ButtonSubmit } from './style';
 
 const FormContact = () => {
@@ -29,15 +30,37 @@ const FormContact = () => {
     setInputData({ ...inputData, [target.name]: value });
   };
 
-  const handleSubmit = () => {
+  const [loadContacts, { data: dataContacts, loading: loadingContacts }] =
+    useLazyQuery(GET_CONTACT_LIST);
+
+  const handleSubmit = async () => {
+    await loadContacts();
     if (
       inputData.first_name &&
       inputData.last_name &&
-      inputData.phones[0].number
+      inputData.phones[0].number &&
+      !loadingContacts
     ) {
-      addContact({ variables: inputData });
+      const isFoundFirstName =
+        dataContacts.contact.filter(
+          (v: ContactList) =>
+            v.first_name.toLowerCase() === inputData.first_name.toLowerCase()
+        ).length > 0;
+
+      const isFoundLastName =
+        dataContacts.contact.filter(
+          (v: ContactList) =>
+            v.last_name.toLowerCase() === inputData.last_name.toLowerCase()
+        ).length > 0;
+
+      if (isFoundFirstName && isFoundLastName) {
+        setErrorMsg('The contact name is already taken');
+        return;
+      }
+      await addContact({ variables: inputData });
       return;
     }
+
     setErrorMsg('All fields must be filled!');
   };
 
