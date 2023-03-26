@@ -1,81 +1,55 @@
 import React, { useMemo } from 'react';
 import { ContactList } from '../../types';
+import IconNext from './IconNext';
+import IconPrevious from './IconPrevious';
+import {
+  ButtonNext,
+  ButtonPrevious,
+  PageNumber,
+  PaginationContainer,
+} from './style';
 
 interface PaginationPropsType {
-  datas: ContactList[];
   currentPage: number;
+  onClickPage: (e: React.MouseEvent) => void;
   onPrevious: () => void;
   onNext: () => void;
   totalPages: number;
 }
 
 const Pagination = ({
-  datas,
   currentPage,
   onPrevious,
   onNext,
+  onClickPage,
   totalPages,
 }: PaginationPropsType) => {
   return (
     <nav aria-label="Page navigation example" className="mt-4">
-      <ul className="inline-flex items-center -space-x-px">
-        <li>
-          <button
-            onClick={onPrevious}
-            disabled={currentPage === 1}
-            className="block px-2 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            <svg
-              aria-hidden="true"
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </button>
-        </li>
+      <PaginationContainer>
+        <ButtonPrevious onClick={onPrevious} disabled={currentPage === 1}>
+          <IconPrevious />
+        </ButtonPrevious>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-          <li>
-            <button
-              disabled={currentPage === pageNum}
-              className={`px-3 cursor-pointer py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${
-                currentPage === pageNum
-                  ? 'bg-indigo-600 text-white hover:text-white hover:bg-indigo-600'
-                  : ''
-              }`}
-            >
-              {pageNum}
-            </button>
-          </li>
-        ))}
-        <li>
-          <button
-            onClick={onNext}
-            disabled={currentPage === totalPages}
-            className="block px-2 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg cursor-pointer hover:text-gray-700 hover:bg-gray-100"
+          <PageNumber
+            key={pageNum}
+            id={pageNum.toString()}
+            onClick={onClickPage}
+            className={`${
+              currentPage === pageNum
+                ? 'bg-indigo-600 text-white hover:text-white hover:bg-indigo-600'
+                : 'bg-white hover:bg-gray-100 hover:text-gray-700 text-gray-500 '
+            }`}
+            disabled={currentPage === pageNum}
           >
-            <svg
-              aria-hidden="true"
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </button>
-        </li>
-      </ul>
+            {pageNum}
+          </PageNumber>
+        ))}
+
+        <ButtonNext onClick={onNext} disabled={currentPage === totalPages}>
+          <IconNext />
+        </ButtonNext>
+      </PaginationContainer>
     </nav>
   );
 };

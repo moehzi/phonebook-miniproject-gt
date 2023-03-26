@@ -40,6 +40,10 @@ const CardContact = ({
     setState(state - 1);
   };
 
+  const handleClickPage = (e: React.MouseEvent) => {
+    setState(Number(e.currentTarget.id));
+  };
+
   return (
     <CardContainer>
       <TitleCard>Favorites ({favorites.length})</TitleCard>
@@ -76,8 +80,8 @@ const CardContact = ({
         )}
       </ul>
       <Pagination
+        onClickPage={handleClickPage}
         totalPages={totalPages}
-        datas={filteredFavorites}
         currentPage={state}
         onPrevious={handlePrevious}
         onNext={handleNext}
