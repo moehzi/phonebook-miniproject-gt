@@ -55,7 +55,9 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
   });
 
   const handleDelete = (e: React.MouseEvent) => {
-    deleteContact({ variables: { id: Number(e.currentTarget.id) } });
+    deleteContact({
+      variables: { id: Number(e.currentTarget.id.split('-')[1]) },
+    });
   };
 
   useEffect(() => {
@@ -97,7 +99,7 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
           <TextPhone>{phone}</TextPhone>
         </CardDescription>
         <DropdownContainer ref={mobileMenuRef}>
-          <DotIcon onClick={handleDropdown} id={id} />
+          <DotIcon onClick={handleDropdown} />
           <Dropdown
             isFavorite={false}
             onAddFavorite={handleAddFavorite}

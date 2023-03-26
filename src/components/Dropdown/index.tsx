@@ -17,14 +17,18 @@ const Dropdown = ({
   isFavorite,
 }: DropdownProps) => {
   return (
-    <DropdownMenu id={id} className={` ${isOpen ? 'block' : 'hidden'}`}>
+    <DropdownMenu className={` ${isOpen ? 'block' : 'hidden'}`}>
       <ul className="py-2" aria-labelledby="dropdownButton">
         {!isFavorite && (
           <ListItem onClick={onAddFavorite} className="text-gray-600">
             Add to favorite
           </ListItem>
         )}
-        <ListItem id={id} className={`text-red-600`} onClick={onDelete}>
+        <ListItem
+          id={`list-${id}`}
+          className={`text-red-600`}
+          onClick={onDelete}
+        >
           Delete
         </ListItem>
       </ul>

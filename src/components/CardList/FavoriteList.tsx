@@ -49,8 +49,10 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
   });
 
   const handleDelete = (e: React.MouseEvent) => {
-    dispatch(deleteFavorite(Number(e.currentTarget.id)));
-    deleteContact({ variables: { id: Number(e.currentTarget.id) } });
+    dispatch(deleteFavorite(Number(e.currentTarget.id.split('-')[1])));
+    deleteContact({
+      variables: { id: Number(e.currentTarget.id.split('-')[1]) },
+    });
   };
 
   useEffect(() => {
@@ -93,7 +95,7 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
         </CardDescription>
         <LoveHit onClick={handleRemoveFavorite} id={id} />
         <DropdownContainer ref={mobileMenuRef}>
-          <DotIcon onClick={handleDropdown} id={id} />
+          <DotIcon onClick={handleDropdown} />
           <Dropdown
             isFavorite={true}
             isOpen={isOpen}

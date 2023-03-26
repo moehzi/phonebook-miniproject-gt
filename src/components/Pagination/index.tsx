@@ -26,7 +26,11 @@ const Pagination = ({
   return (
     <nav aria-label="Page navigation example" className="mt-4 text-center">
       <PaginationContainer>
-        <ButtonPrevious onClick={onPrevious} disabled={currentPage === 1}>
+        <ButtonPrevious
+          aria-label="button-previous"
+          onClick={onPrevious}
+          disabled={currentPage === 1}
+        >
           <IconPrevious />
         </ButtonPrevious>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
@@ -45,7 +49,11 @@ const Pagination = ({
           </PageNumber>
         ))}
 
-        <ButtonNext onClick={onNext} disabled={currentPage === totalPages}>
+        <ButtonNext
+          aria-label="button-next"
+          onClick={onNext}
+          disabled={currentPage === totalPages}
+        >
           <IconNext />
         </ButtonNext>
       </PaginationContainer>

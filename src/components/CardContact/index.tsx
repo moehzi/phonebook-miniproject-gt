@@ -14,7 +14,7 @@ interface CardContactProps {
   setState: (pageNum: number) => void;
 }
 
-const TitleCard = tw.h5`font-semibold text-lg text-gray-700`;
+const TitleCard = tw.p`font-semibold text-lg text-gray-700`;
 
 const CardContact = ({
   datas,
@@ -46,7 +46,7 @@ const CardContact = ({
   return (
     <CardContainer>
       <TitleCard>Favorites ({favorites.length})</TitleCard>
-      <ul className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200">
         {favorites.length > 0 &&
           favorites.map((data) => {
             return (
@@ -59,9 +59,9 @@ const CardContact = ({
               />
             );
           })}
-      </ul>
+      </div>
       <TitleCard className="mt-4">All Contacts</TitleCard>
-      <ul className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200">
         {filteredFavorites.length > 0 ? (
           filteredFavorites.map((data) => {
             return (
@@ -77,7 +77,7 @@ const CardContact = ({
         ) : (
           <p className="font-semibold text-center">No result found</p>
         )}
-      </ul>
+      </div>
       <Pagination
         onClickPage={handleClickPage}
         totalPages={totalPages}
