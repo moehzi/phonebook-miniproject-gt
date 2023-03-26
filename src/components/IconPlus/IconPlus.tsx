@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const IconPlus = () => {
+  const navigate = useNavigate();
   return (
     <svg
+      onClick={() => navigate('/form-contact')}
       className="self-end w-16 h-16 text-indigo-600 cursor-pointer"
       width="24"
       height="24"
