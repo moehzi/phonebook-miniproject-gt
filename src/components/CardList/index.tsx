@@ -1,11 +1,17 @@
 import React, {
   MouseEventHandler,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import Avatar from 'react-avatar';
+import {
+  addFavorite,
+  ContactDispatchContext,
+  deleteFavorite,
+} from '../../contexts/ContactContext';
 import DotIcon from '../DotIcon';
 import Dropdown from '../Dropdown';
 import LoveHit from '../LoveHit';
@@ -24,15 +30,38 @@ interface CardListProps {
   first_name: string;
   last_name: string;
   phone: string;
+  isFavorite: boolean;
 }
 
-const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
+const CardList = ({
+  id,
+  first_name,
+  last_name,
+  phone,
+  isFavorite,
+}: CardListProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { dispatch } = useContext(ContactDispatchContext);
 
   const handleDropdown = (e: React.MouseEvent) => {
     setIsOpen(!isOpen);
   };
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  const handleAddFavorite = (e: React.SyntheticEvent) => {
+    setIsOpen(false);
+    const datas = {
+      id,
+      first_name,
+      last_name,
+      phone,
+    };
+    dispatch(addFavorite(datas));
+  };
+
+  const handleRemoveFavorite = (e: React.SyntheticEvent) => {
+    dispatch(deleteFavorite(Number(e.currentTarget.id)));
+  };
 
   useEffect(() => {
     const handler: EventListener = (event: Event) => {
@@ -70,9 +99,12 @@ const CardList = ({ id, first_name, last_name, phone }: CardListProps) => {
           </TextName>
           <TextPhone>{phone}</TextPhone>
         </CardDescription>
+        {isFavorite && <LoveHit onClick={handleRemoveFavorite} id={id} />}
         <DropdownContainer ref={mobileMenuRef}>
           <DotIcon onClick={handleDropdown} id={id} />
           <Dropdown
+            isFavorite={isFavorite}
+            onAddFavorite={handleAddFavorite}
             isOpen={isOpen}
             id={id.toString()}
             onDelete={() => console.log('wow')}

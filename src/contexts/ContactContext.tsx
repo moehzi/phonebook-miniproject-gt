@@ -1,17 +1,28 @@
-import React, { createContext, Reducer, useReducer } from 'react';
-import ContactList from '../types';
+import React, { Children, createContext, Reducer, useReducer } from 'react';
+import { FavoriteContact } from '../types';
 
-export const initialState: ContactList[] = [];
+export const initialState: FavoriteContact[] = [];
+
+export enum ActionType {
+  AddFavorite,
+  DeleteFavorite,
+}
 
 export interface ContactContextType {
-  state: ContactList[];
+  state: FavoriteContact[];
+}
+
+interface ContactDispatchContextType {
   dispatch: React.Dispatch<FavoriteAction>;
 }
 
-// export const ContactDispatchContext = React.createContext(null);
+export const ContactDispatchContext =
+  React.createContext<ContactDispatchContextType>({
+    dispatch: () => undefined,
+  });
+
 export const ContactContext = createContext<ContactContextType>({
   state: initialState,
-  dispatch: () => undefined,
 });
 
 interface ContactsProviderProps {
@@ -19,43 +30,54 @@ interface ContactsProviderProps {
 }
 
 interface AddFavorite {
-  type: 'ActionType.ADD_TO_FAVORITE';
-  payload: ContactList;
+  type: ActionType.AddFavorite;
+  payload: FavoriteContact;
 }
 
-export type FavoriteAction = AddFavorite;
+interface DeleteFavorite {
+  type: ActionType.DeleteFavorite;
+  payload: number;
+}
+
+export type FavoriteAction = AddFavorite | DeleteFavorite;
 
 export const favoriteReducer = (
-  state: ContactList[],
+  state: FavoriteContact[],
   action: FavoriteAction
 ) => {
   switch (action.type) {
-    case 'ActionType.ADD_TO_FAVORITE': {
-      return [
-        ...state,
-        {
-          id: action.payload.id,
-          last_name: action.payload.last_name,
-          first_name: action.payload.first_name,
-          phones: action.payload.phones,
-          created_at: action.payload.created_at,
-        },
-      ];
+    case ActionType.AddFavorite: {
+      return [...state, action.payload];
+    }
+    case ActionType.DeleteFavorite: {
+      const filterRemoved = state.filter((data) => data.id !== action.payload);
+      return filterRemoved;
     }
     default:
       return state;
   }
 };
 
+export const addFavorite = (contacts: FavoriteContact): AddFavorite => ({
+  type: ActionType.AddFavorite,
+  payload: contacts,
+});
+
+export const deleteFavorite = (id: number): DeleteFavorite => ({
+  type: ActionType.DeleteFavorite,
+  payload: id,
+});
+
 export const ContactsProvider = ({ children }: ContactsProviderProps) => {
-  const [state, dispatch] = useReducer<Reducer<ContactList[], FavoriteAction>>(
-    favoriteReducer,
-    initialState
-  );
+  const [state, dispatch] = useReducer<
+    Reducer<FavoriteContact[], FavoriteAction>
+  >(favoriteReducer, initialState);
 
   return (
-    <ContactContext.Provider value={{ state, dispatch }}>
-      {children}
+    <ContactContext.Provider value={{ state }}>
+      <ContactDispatchContext.Provider value={{ dispatch }}>
+        {children}
+      </ContactDispatchContext.Provider>
     </ContactContext.Provider>
   );
 };

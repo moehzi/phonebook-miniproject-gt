@@ -1,6 +1,6 @@
 import React from 'react';
 import CardContact from '../../components/CardContact';
-import ContactList from '../../types';
+import { ContactList } from '../../types/index';
 
 interface ListContactProps {
   datas: ContactList[];

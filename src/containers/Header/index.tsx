@@ -3,7 +3,7 @@ import Searchbox from '../../components/Searchbox';
 import { Text } from '../../styles/style';
 import { Heading } from './style';
 import tw from 'twin.macro';
-import ContactList from '../../types/index';
+import { ContactList } from '../../types/index';
 interface HeaderProps {
   datas: ContactList[];
   state: string;
