@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Avatar from 'react-avatar';
+import { useNavigate } from 'react-router-dom';
 import {
   ContactDispatchContext,
   deleteFavorite,
@@ -31,6 +32,7 @@ interface CardListProps {
 const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { dispatch } = useContext(ContactDispatchContext);
+  const navigate = useNavigate();
 
   const handleDropdown = (e: React.MouseEvent) => {
     setIsOpen(!isOpen);
@@ -42,9 +44,6 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
   };
 
   const [deleteContact, { loading }] = useMutation(DELETE_CONTACT_PHONE, {
-    onCompleted: (data) => {
-      console.log(data);
-    },
     refetchQueries: [GET_CONTACT_LIST],
   });
 
@@ -53,6 +52,11 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
     deleteContact({
       variables: { id: Number(e.currentTarget.id.split('-')[1]) },
     });
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    const id = Number(e.currentTarget.id.split('-')[1]);
+    navigate(`/form-contact/edit/${id}`);
   };
 
   useEffect(() => {
@@ -97,6 +101,7 @@ const FavoriteList = ({ id, first_name, last_name, phone }: CardListProps) => {
         <DropdownContainer ref={mobileMenuRef}>
           <DotIcon onClick={handleDropdown} />
           <Dropdown
+            onEdit={handleEdit}
             isFavorite={true}
             isOpen={isOpen}
             id={id.toString()}

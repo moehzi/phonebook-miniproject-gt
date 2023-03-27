@@ -6,6 +6,7 @@ interface DropdownProps {
   id: string;
   onDelete: (e: React.MouseEvent) => void;
   onAddFavorite?: (e: React.SyntheticEvent) => void;
+  onEdit: (e: React.MouseEvent) => void;
   isFavorite: boolean;
 }
 
@@ -15,6 +16,7 @@ const Dropdown = ({
   onDelete,
   onAddFavorite,
   isFavorite,
+  onEdit,
 }: DropdownProps) => {
   return (
     <DropdownMenu className={` ${isOpen ? 'block' : 'hidden'}`}>
@@ -24,6 +26,13 @@ const Dropdown = ({
             Add to favorite
           </ListItem>
         )}
+        <ListItem
+          id={`list-${id}`}
+          className={`text-gray-600`}
+          onClick={onEdit}
+        >
+          Edit
+        </ListItem>
         <ListItem
           id={`list-${id}`}
           className={`text-red-600`}

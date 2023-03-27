@@ -1,14 +1,16 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AlertError from '../../components/AlertError';
 import InputBox from '../../components/InputBox';
 import InputPhone from '../../components/InputPhone';
 import Loader from '../../components/Loader';
+import { ContactsProvider } from '../../contexts/ContactContext';
 import { ADD_CONTACT_WITH_PHONES } from '../../queries/AddContactWithPhones';
 import { GET_CONTACT_LIST } from '../../queries/GetContactList';
 import { Container } from '../../styles/style';
 import { ContactList } from '../../types';
+import LoadingButton from './LoadingButton';
 import { ButtonCancel, ButtonSubmit } from './style';
 
 const FormContact = () => {
@@ -18,6 +20,7 @@ const FormContact = () => {
     phones: [{ number: '' }],
   });
   const [errorMsg, setErrorMsg] = useState('');
+  const location = useLocation();
 
   const navigate = useNavigate();
   const handleCancel = () => {
@@ -39,7 +42,7 @@ const FormContact = () => {
       inputData.first_name &&
       inputData.last_name &&
       inputData.phones[0].number &&
-      !loadingContacts
+      dataContacts
     ) {
       const isFoundFirstName =
         dataContacts.contact.filter(
@@ -90,8 +93,6 @@ const FormContact = () => {
     },
     refetchQueries: [GET_CONTACT_LIST],
     onError: (error) => {
-      //   setErrorMsg(err.name);
-      console.log(error.graphQLErrors[0].message, 'wadaw');
       if (error.graphQLErrors[0].message.includes('phone_number_key')) {
         setErrorMsg(
           "Phone number is already in the contact, Can't be duplicate!"
@@ -109,40 +110,48 @@ const FormContact = () => {
   }
 
   return (
-    <Container>
-      <h1 className="mb-2 text-2xl font-semibold">Create new contact</h1>
-      {errorMsg && (
-        <AlertError
-          title="Error!"
-          message={errorMsg}
-          onClose={handleCloseErr}
-        />
+    <>
+      {location.pathname === '/form-contact' ? (
+        <Container>
+          <h1 className="mb-2 text-2xl font-semibold">Create new contact</h1>
+          {errorMsg && (
+            <AlertError
+              title="Error!"
+              message={errorMsg}
+              onClose={handleCloseErr}
+            />
+          )}
+          <InputBox
+            onChange={handleChange}
+            id="first_name"
+            placeholder="Input your firstname"
+            label="Firstname"
+            value={inputData.first_name}
+          />
+          <InputBox
+            onChange={handleChange}
+            id="last_name"
+            placeholder="Input your lastname"
+            label="Lastname"
+            value={inputData.last_name}
+          />
+          <InputPhone
+            state={inputData.phones}
+            handleAddPhone={handleAdd}
+            handleChangePhone={handleChangePhone}
+            handleDeletePhone={handleDeletePhone}
+          />
+          <div className="flex justify-end gap-2">
+            <ButtonCancel onClick={handleCancel}>Cancel</ButtonCancel>
+            <ButtonSubmit onClick={handleSubmit} disabled={loadingContacts}>
+              {loadingContacts ? <LoadingButton /> : 'Add new contact'}
+            </ButtonSubmit>
+          </div>
+        </Container>
+      ) : (
+        <Outlet />
       )}
-      <InputBox
-        onChange={handleChange}
-        id="first_name"
-        placeholder="Input your firstname"
-        label="Firstname"
-        value={inputData.first_name}
-      />
-      <InputBox
-        onChange={handleChange}
-        id="last_name"
-        placeholder="Input your lastname"
-        label="Lastname"
-        value={inputData.last_name}
-      />
-      <InputPhone
-        state={inputData.phones}
-        handleAddPhone={handleAdd}
-        handleChangePhone={handleChangePhone}
-        handleDeletePhone={handleDeletePhone}
-      />
-      <div className="flex justify-end gap-2">
-        <ButtonCancel onClick={handleCancel}>Cancel</ButtonCancel>
-        <ButtonSubmit onClick={handleSubmit}>Add new contact</ButtonSubmit>
-      </div>
-    </Container>
+    </>
   );
 };
 

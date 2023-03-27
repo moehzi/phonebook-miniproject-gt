@@ -8,6 +8,7 @@ export const initialState: FavoriteContact[] = localStorage.getItem('favorites')
 export enum ActionType {
   AddFavorite,
   DeleteFavorite,
+  NewFavorite,
 }
 
 export interface ContactContextType {
@@ -41,7 +42,12 @@ interface DeleteFavorite {
   payload: number;
 }
 
-export type FavoriteAction = AddFavorite | DeleteFavorite;
+interface NewFavorite {
+  type: ActionType.NewFavorite;
+  payload: FavoriteContact;
+}
+
+export type FavoriteAction = AddFavorite | DeleteFavorite | NewFavorite;
 
 export const favoriteReducer = (
   favorites: FavoriteContact[],
@@ -54,6 +60,16 @@ export const favoriteReducer = (
         JSON.stringify([...favorites, action.payload])
       );
       return [...favorites, action.payload];
+    }
+    case ActionType.NewFavorite: {
+      const filterRemoved = favorites.filter(
+        (data) => data.id !== action.payload.id
+      );
+      localStorage.setItem(
+        'favorites',
+        JSON.stringify([...filterRemoved, action.payload])
+      );
+      return [...filterRemoved, action.payload];
     }
     case ActionType.DeleteFavorite: {
       const filterRemoved = favorites.filter(
@@ -75,6 +91,11 @@ export const addFavorite = (contacts: FavoriteContact): AddFavorite => ({
 export const deleteFavorite = (id: number): DeleteFavorite => ({
   type: ActionType.DeleteFavorite,
   payload: id,
+});
+
+export const newFavorite = (contact: FavoriteContact): NewFavorite => ({
+  type: ActionType.NewFavorite,
+  payload: contact,
 });
 
 export const ContactsProvider = ({ children }: ContactsProviderProps) => {
