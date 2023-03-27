@@ -7,7 +7,7 @@ import InputBox from '../../components/InputBox';
 import Loader from '../../components/Loader';
 import { GET_CONTACT_LIST } from '../../queries/GetContactList';
 import { Container } from '../../styles/style';
-import { ContactList, FavoriteContact } from '../../types';
+import { ContactList } from '../../types';
 import { ButtonCancel, ButtonSubmit } from './style';
 import { GET_CONTACT_DETAIL } from '../../queries/GetContactDetail';
 import { EDIT_CONTACT } from '../../queries/EditContact';

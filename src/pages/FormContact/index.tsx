@@ -5,7 +5,6 @@ import AlertError from '../../components/AlertError';
 import InputBox from '../../components/InputBox';
 import InputPhone from '../../components/InputPhone';
 import Loader from '../../components/Loader';
-import { ContactsProvider } from '../../contexts/ContactContext';
 import { ADD_CONTACT_WITH_PHONES } from '../../queries/AddContactWithPhones';
 import { GET_CONTACT_LIST } from '../../queries/GetContactList';
 import { Container } from '../../styles/style';
